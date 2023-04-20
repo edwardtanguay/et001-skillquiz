@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const config = {
 	numberOfQuestions: 5,
-	displayingDescriptions: false,
+	displayingExtraInfo: false,
 	correctSkill: null
 };
 
@@ -18,7 +18,20 @@ const displaySkill = (skill) => {
 	html += `
 <div class="skill">
     <div class="name">${skill.name}</div>
-    <div class="description" style="display:none">${skill.description}</div>
+	<div class="extraInfo" style="display:none">
+		<div class="description">${skill.description}</div>
+		<div class="learnLinks">
+			<a target="_blank" href="${skill.url}" class="learnLink">GENERAL INFO</a>
+			<div class="separator">&#x2022;</div>
+			<div>English:</div>
+			<a target="_blank" href="https://www.google.com/search?q=${skill.name}+web+development" class="learnLink">articles</a>
+			<a target="_blank" href="https://www.youtube.com/results?search_query=web+development+${skill.name}" class="learnLink">videos</a>
+			<div class="separator">&#x2022;</div>
+			<div>German:</div>
+			<a target="_blank" href="https://www.google.com/search?q=${skill.name}+web+development+deutsch" class="learnLink">articles</a>
+			<a target="_blank" href="https://www.youtube.com/results?search_query=web+development+deutsch+${skill.name}" class="learnLink">videos</a>
+		</div>
+	</div>
 </div>
  `;
 	return html;
@@ -27,7 +40,7 @@ const displaySkill = (skill) => {
 const determineCorrectAnswer = (randomSkills) => {
 	const randomIndex = Math.floor(Math.random() * randomSkills.length);
 	config.correctSkill = randomSkills[randomIndex];
-}
+};
 
 const getQuizSkills = () => {
 	const randomSkills = [];
@@ -51,14 +64,14 @@ const displayQuizHtml = () => {
 const attachEvents = () => {
 	const btnToggleAnswersElem = document.querySelector('.btnToggleAnswers');
 	btnToggleAnswersElem.addEventListener('click', () => {
-		const descriptionElems = document.querySelectorAll('.description');
-		config.displayingDescriptions = !config.displayingDescriptions;
-		descriptionElems.forEach((elem) => {
-			if (config.displayingDescriptions) {
+		const extraInfoElems = document.querySelectorAll('.extraInfo');
+		config.displayingExtraInfo = !config.displayingExtraInfo;
+		extraInfoElems.forEach((elem) => {
+			if (config.displayingExtraInfo) {
 				elem.style.display = 'block';
-      } else {
+			} else {
 				elem.style.display = 'none';
-      }
+			}
 		});
 	});
 

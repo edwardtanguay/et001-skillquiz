@@ -43,7 +43,7 @@ body {
 				gap: .5rem;
 				margin-top: .7rem;
 				background-color: #1c1c1c;
-				padding: .5rem;
+				padding: 1rem;
 				border-radius: .5rem;
 				a {
 					color: #777;
@@ -51,6 +51,24 @@ body {
 				.separator {
 					color: #444;
 				}
+			}
+			.jobAds {
+				margin-top: .7rem;
+				background-color: #151515;
+				padding: 1rem;
+				border-radius: .5rem;
+				line-height: 1.4rem;
+
+				.intro {
+					color: rgb(211, 211, 96);
+				}
+				a {
+					color: #777;
+				}
+				.separator {
+					color: #444;
+				}
+
 			}
 		}
 	}

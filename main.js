@@ -13,6 +13,13 @@ const skillsUrl = 'https://edwardtanguay.vercel.app/share/skills.json';
 const jobs = (await axios.get(jobsUrl)).data;
 const skills = (await axios.get(skillsUrl)).data;
 
+const getJobAdHtml = (skill) => {
+	const jobHtmlBlocks = skill.jobs.map(
+		(job) => `<span><a target="_blank" href="${job.url}">${job.title} at ${job.company}</a></span>`
+	);
+	return jobHtmlBlocks.join('<span> &#x2022; </span>');
+};
+
 const displaySkill = (skill) => {
 	let html = '';
 	html += `
@@ -24,12 +31,24 @@ const displaySkill = (skill) => {
 			<a target="_blank" href="${skill.url}" class="learnLink">GENERAL INFO</a>
 			<div class="separator">&#x2022;</div>
 			<div>English:</div>
-			<a target="_blank" href="https://www.google.com/search?q=${skill.name}+web+development" class="learnLink">articles</a>
-			<a target="_blank" href="https://www.youtube.com/results?search_query=web+development+${skill.name}" class="learnLink">videos</a>
+			<a target="_blank" href="https://www.google.com/search?q=${
+				skill.name
+			}+web+development" class="learnLink">articles</a>
+			<a target="_blank" href="https://www.youtube.com/results?search_query=web+development+${
+				skill.name
+			}" class="learnLink">videos</a>
 			<div class="separator">&#x2022;</div>
 			<div>German:</div>
-			<a target="_blank" href="https://www.google.com/search?q=${skill.name}+web+development+deutsch" class="learnLink">articles</a>
-			<a target="_blank" href="https://www.youtube.com/results?search_query=web+development+deutsch+${skill.name}" class="learnLink">videos</a>
+			<a target="_blank" href="https://www.google.com/search?q=${
+				skill.name
+			}+web+development+deutsch" class="learnLink">articles</a>
+			<a target="_blank" href="https://www.youtube.com/results?search_query=web+development+deutsch+${
+				skill.name
+			}" class="learnLink">videos</a>
+		</div>
+		<div class="jobAds">
+		<span class="intro">${skill.jobs.length === 1 ? '1 job ad' : skill.jobs.length + ' job ads'}: </span>
+			${getJobAdHtml(skill)}	
 		</div>
 	</div>
 </div>
@@ -42,11 +61,24 @@ const determineCorrectAnswer = (randomSkills) => {
 	config.correctSkill = randomSkills[randomIndex];
 };
 
+const getJobsForSkill = (skill) => {
+	return jobs.filter(job => {
+		const skillIdCodes = job.skillList.split(',');
+		for (const skillIdCode of skillIdCodes) {
+			if (skill.idCode === skillIdCode.trim()) {
+				return job;
+			}
+		}
+	});
+}
+
 const getQuizSkills = () => {
 	const randomSkills = [];
 	for (let i = 0; i < config.numberOfQuestions; i++) {
 		const randomIndex = Math.floor(Math.random() * skills.length);
-		randomSkills.push(skills[randomIndex]);
+		const randomSkill = skills[randomIndex];
+		randomSkill.jobs = getJobsForSkill(randomSkill);
+		randomSkills.push(randomSkill);
 	}
 	determineCorrectAnswer(randomSkills);
 	return randomSkills;

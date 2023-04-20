@@ -11,4 +11,19 @@ body {
 	p {
 		font-size: 1.2rem;
 	}
+
+	.quizArea {
+		.skill {
+			background-color: #222;
+			padding: 1rem;
+			margin-bottom: 1rem;
+
+			.name {
+				color: orange;
+			}
+			.description {
+				margin-top: .5rem;
+			}
+		}
+	}
 }

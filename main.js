@@ -2,7 +2,8 @@ import './style.scss';
 import axios from 'axios';
 
 const config = {
-	numberOfQuestions: 5
+	numberOfQuestions: 5,
+	displayingDescriptions: false
 };
 
 const jobsUrl = 'https://edwardtanguay.vercel.app/share/jobs.json';
@@ -16,7 +17,7 @@ const displaySkill = (skill) => {
 	html += `
 <div class="skill">
     <div class="name">${skill.name}</div>
-    <div class="description">${skill.description}</div>
+    <div class="description" style="display:none">${skill.description}</div>
 </div>
  `;
 	return html;
@@ -25,8 +26,8 @@ const displaySkill = (skill) => {
 const getQuizSkills = () => {
 	const randomSkills = [];
 	for (let i = 0; i < config.numberOfQuestions; i++) {
-    const randomIndex = Math.floor(Math.random() * skills.length);
-    randomSkills.push(skills[randomIndex]);
+		const randomIndex = Math.floor(Math.random() * skills.length);
+		randomSkills.push(skills[randomIndex]);
 	}
 	return randomSkills;
 };
@@ -40,12 +41,29 @@ const displayQuizHtml = () => {
 	return html;
 };
 
+const attachEvents = () => {
+	const btnToggleAnswersElem = document.querySelector('.btnToggleAnswers');
+	btnToggleAnswersElem.addEventListener('click', () => {
+		const descriptionElems = document.querySelectorAll('.description');
+		config.displayingDescriptions = !config.displayingDescriptions;
+		descriptionElems.forEach((elem) => {
+			if (config.displayingDescriptions) {
+				elem.style.display = 'block';
+      } else {
+				elem.style.display = 'none';
+      }
+		});
+	});
+};
+
 document.querySelector('#app').innerHTML = `
   <div>
   <h1>Webdev Skill Quiz</h1>
+  <div class="commandArea">
+    <button class="btnToggleAnswers">Toggle Answers</button>
+  </div>
   ${displayQuizHtml()}
   </div>
 `;
 
-const quizAreaElem = document.querySelector('.quizArea');
-// quizAreaElem.style.display = 'none';
+attachEvents();

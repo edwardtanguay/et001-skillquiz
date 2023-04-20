@@ -3,7 +3,8 @@ import axios from 'axios';
 
 const config = {
 	numberOfQuestions: 5,
-	displayingDescriptions: false
+	displayingDescriptions: false,
+	correctSkill: null
 };
 
 const jobsUrl = 'https://edwardtanguay.vercel.app/share/jobs.json';
@@ -23,12 +24,18 @@ const displaySkill = (skill) => {
 	return html;
 };
 
+const determineCorrectAnswer = (randomSkills) => {
+	const randomIndex = Math.floor(Math.random() * randomSkills.length);
+	config.correctSkill = randomSkills[randomIndex];
+}
+
 const getQuizSkills = () => {
 	const randomSkills = [];
 	for (let i = 0; i < config.numberOfQuestions; i++) {
 		const randomIndex = Math.floor(Math.random() * skills.length);
 		randomSkills.push(skills[randomIndex]);
 	}
+	determineCorrectAnswer(randomSkills);
 	return randomSkills;
 };
 
@@ -54,6 +61,9 @@ const attachEvents = () => {
       }
 		});
 	});
+
+	const answerElem = document.querySelector('.answer');
+	answerElem.innerText = config.correctSkill.description;
 };
 
 document.querySelector('#app').innerHTML = `
@@ -61,6 +71,7 @@ document.querySelector('#app').innerHTML = `
   <h1>Webdev Skill Quiz</h1>
   <div class="commandArea">
     <button class="btnToggleAnswers">Toggle Answers</button>
+	<div class="answer"></div>
   </div>
   ${displayQuizHtml()}
   </div>

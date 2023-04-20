@@ -25,7 +25,8 @@ const displaySkill = (skill) => {
 const getQuizSkills = () => {
 	const randomSkills = [];
 	for (let i = 0; i < config.numberOfQuestions; i++) {
-    randomSkills.push(skills[i]);
+    const randomIndex = Math.floor(Math.random() * skills.length);
+    randomSkills.push(skills[randomIndex]);
 	}
 	return randomSkills;
 };
@@ -45,3 +46,6 @@ document.querySelector('#app').innerHTML = `
   ${displayQuizHtml()}
   </div>
 `;
+
+const quizAreaElem = document.querySelector('.quizArea');
+// quizAreaElem.style.display = 'none';

@@ -3,13 +3,8 @@ import axios from 'axios';
 
 const jobsUrl = 'https://edwardtanguay.vercel.app/share/jobs.json';
 
-const getData = async () => {
-	const response = await axios.get(jobsUrl);
-	const jobs = response.data;
-	console.log(jobs);
-}
-
-getData();
+const jobs = (await axios.get(jobsUrl)).data;
+console.log(jobs);
 
 document.querySelector('#app').innerHTML = `
   <div>
